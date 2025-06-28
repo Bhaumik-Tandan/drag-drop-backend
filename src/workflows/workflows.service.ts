@@ -64,7 +64,6 @@ export class WorkflowsService {
     if (!dto.configurations)
       return { valid: false, error: 'Configurations are required' };
 
-    // Check for duplicate component IDs
     const ids = dto.components.map(c => c.id);
     const uniqueIds = new Set(ids);
     if (ids.length !== uniqueIds.size) {
