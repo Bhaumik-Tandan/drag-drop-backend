@@ -79,3 +79,25 @@ Use this endpoint to explore and test all available APIs.
     "updatedAt": "2025-06-28T17:48:22.921Z"
 }
 ```
+
+## Environment Variables
+
+Create a `.env` file in the project root with the following content:
+
+```env
+DATABASE_URL="your_postgres_connection_string"
+JWT_SECRET="your_jwt_secret"
+```
+
+- `DATABASE_URL`: The connection string for your PostgreSQL database.
+- `JWT_SECRET`: A secret key for signing JWT tokens.
+
+## Why PostgreSQL?
+
+PostgreSQL is used as the database for this project because it offers:
+
+- **ACID Transactions:** Ensures reliable and consistent data operations, which is important for workflows and user management.
+- **Native JSON Support:** Allows storing and querying JSON data efficiently, which is ideal for flexible workflow components and configurations.
+- **Scalability & Performance:** Handles complex queries and large datasets efficiently.
+
+This makes PostgreSQL a great fit for applications that require both transactional integrity and flexible data structures.
