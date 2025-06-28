@@ -50,4 +50,9 @@ export class WorkflowsController {
   ) {
     return this.svc.remove(req.user.id, id);
   }
+
+  @Post('validate')
+  validate(@Body() dto: CreateWorkflowDto, @Request() req) {
+    return this.svc.validate(req.user.id, dto);
+  }
 }

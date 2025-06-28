@@ -3,6 +3,7 @@ import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/commo
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateWorkflowDto } from './dto/create-workflow.dto';
 import { UpdateWorkflowDto } from './dto/update-workflow.dto';
+import { Prisma } from 'generated/prisma';
 
 @Injectable()
 export class WorkflowsService {
@@ -13,9 +14,9 @@ export class WorkflowsService {
       data: {
         name: dto.name,
         userId,
-        components: dto.components,
-        connections: dto.connections,
-        configurations: dto.configurations,
+        components: dto.components as unknown as Prisma.InputJsonValue,
+        connections: dto.connections as unknown as Prisma.InputJsonValue,
+        configurations: dto.configurations as Prisma.InputJsonValue,
       },
     });
   }
@@ -40,9 +41,9 @@ export class WorkflowsService {
       where: { id },
       data: {
         ...(dto.name         !== undefined && { name: dto.name }),
-        ...(dto.components   !== undefined && { components: dto.components }),
-        ...(dto.connections  !== undefined && { connections: dto.connections }),
-        ...(dto.configurations !== undefined && { configurations: dto.configurations }),
+        ...(dto.components   !== undefined && { components: dto.components as unknown as Prisma.InputJsonValue }),
+        ...(dto.connections  !== undefined && { connections: dto.connections as unknown as Prisma.InputJsonValue }),
+        ...(dto.configurations !== undefined && { configurations: dto.configurations as Prisma.InputJsonValue }),
       },
     });
   }
@@ -51,5 +52,43 @@ export class WorkflowsService {
     await this.findOne(userId, id);
     await this.prisma.workflow.delete({ where: { id } });
     return { deleted: true };
+  }
+
+  async validate(userId: number, dto: CreateWorkflowDto) {
+    // Basic validation: check required fields
+    if (!dto.name) return { valid: false, error: 'Name is required' };
+    if (!Array.isArray(dto.components) || dto.components.length === 0)
+      return { valid: false, error: 'At least one component is required' };
+    if (!Array.isArray(dto.connections))
+      return { valid: false, error: 'Connections must be an array' };
+    if (!dto.configurations)
+      return { valid: false, error: 'Configurations are required' };
+
+    // Check for duplicate component IDs
+    const ids = dto.components.map(c => c.id);
+    const uniqueIds = new Set(ids);
+    if (ids.length !== uniqueIds.size) {
+      return { valid: false, error: 'Duplicate component IDs found' };
+    }
+
+    // Check all components have required fields
+    for (const c of dto.components) {
+      if (!c.id || !c.title || !c.type || !c.position || !c.config) {
+        return { valid: false, error: `Component with id ${c.id} is missing required fields` };
+      }
+    }
+
+    // Check all connections refer to valid component IDs
+    for (const conn of dto.connections) {
+      if (!ids.includes(conn.from)) {
+        return { valid: false, error: `Connection from invalid component id: ${conn.from}` };
+      }
+      if (!ids.includes(conn.to)) {
+        return { valid: false, error: `Connection to invalid component id: ${conn.to}` };
+      }
+    }
+
+    // Passed all checks
+    return { valid: true };
   }
 }

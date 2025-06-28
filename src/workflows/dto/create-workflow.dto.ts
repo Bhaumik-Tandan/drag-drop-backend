@@ -1,15 +1,34 @@
-import { IsString, IsNotEmpty, IsJSON, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsArray, ValidateNested, IsObject, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
+
+export interface WorkflowComponent {
+  id: string;
+  title: string;
+  type: string;
+  color: string;
+  icon: string;
+  position: { x: number; y: number };
+  config: Record<string, any>;
+}
+
+export interface WorkflowConnection {
+  id: string;
+  from: string;
+  fromType: string;
+  to: string;
+  toType: string;
+}
 
 export class CreateWorkflowDto {
   @IsString() @IsNotEmpty()
   name: string;
 
-  @IsJSON()
-  components: any;
+  @IsArray() @ValidateNested({ each: true }) @Type(() => Object)
+  components: WorkflowComponent[];
 
-  @IsJSON()
-  connections: any;
+  @IsArray() @ValidateNested({ each: true }) @Type(() => Object)
+  connections: WorkflowConnection[];
 
-  @IsJSON() @IsOptional()
-  configurations?: any;
+  @IsObject() @IsOptional()
+  configurations?: Record<string, any>;
 }
