@@ -17,18 +17,7 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
-## Test
 
-```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
-```
 
 ## API Documentation
 
@@ -37,9 +26,6 @@ Swagger UI is available at: [http://localhost:3000/api](http://localhost:3000/ap
 Use this endpoint to explore and test all available APIs.
 
 
-## License
-
-Nest is [MIT licensed](LICENSE).
 
 ## Sample Workflow Payload
 
