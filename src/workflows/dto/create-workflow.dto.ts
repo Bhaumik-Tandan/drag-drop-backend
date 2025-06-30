@@ -1,34 +1,54 @@
-import { IsString, IsNotEmpty, IsArray, ValidateNested, IsObject, IsOptional } from 'class-validator';
+// src/workflows/dto/create-workflow.dto.ts
+import {
+  IsString,
+  IsNotEmpty,
+  IsArray,
+  ValidateNested,
+  IsObject,
+  IsOptional,
+  IsNumber,
+} from 'class-validator';
 import { Type } from 'class-transformer';
+import { Prisma } from 'generated/prisma';
 
-export interface WorkflowComponent {
-  id: string;
-  title: string;
-  type: string;
-  color: string;
-  icon: string;
-  position: { x: number; y: number };
-  config: Record<string, any>;
+
+class PositionDto {
+  @IsNumber() x: number;
+  @IsNumber() y: number;
 }
 
-export interface WorkflowConnection {
-  id: string;
-  from: string;
-  fromType: string;
-  to: string;
-  toType: string;
+class WorkflowComponentDto {
+  @IsString() id: string;
+  @IsString() title: string;
+  @IsString() type: string;
+  @IsString() color: string;
+  @IsString() icon: string;
+
+  @ValidateNested() @Type(() => PositionDto)
+  position: PositionDto;
+
+  @IsObject()
+  config: Prisma.InputJsonValue;
+}
+
+class WorkflowConnectionDto {
+  @IsString() id: string;
+  @IsString() from: string;
+  @IsString() fromType: string;
+  @IsString() to: string;
+  @IsString() toType: string;
 }
 
 export class CreateWorkflowDto {
   @IsString() @IsNotEmpty()
   name: string;
 
-  @IsArray() @ValidateNested({ each: true }) @Type(() => Object)
-  components: WorkflowComponent[];
+  @IsArray() @ValidateNested({ each: true }) @Type(() => WorkflowComponentDto)
+  components: WorkflowComponentDto[] & Prisma.InputJsonValue;
 
-  @IsArray() @ValidateNested({ each: true }) @Type(() => Object)
-  connections: WorkflowConnection[];
+  @IsArray() @ValidateNested({ each: true }) @Type(() => WorkflowConnectionDto)
+  connections: WorkflowConnectionDto[] & Prisma.InputJsonValue;
 
-  @IsObject() @IsOptional()
-  configurations?: Record<string, any>;
+  @IsOptional() @IsObject()
+  configurations?: Prisma.InputJsonValue;
 }

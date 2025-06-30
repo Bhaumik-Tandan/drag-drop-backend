@@ -14,7 +14,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async register(data: RegisterDto): Promise<{ user: User }> {
+  async register(data: RegisterDto): Promise<{ user: User; jwt: string }> {
     const hashedPassword = await AuthService.hashPassword(data.password);
     const user = await this.userService.create({
       email: data.email,
@@ -26,7 +26,7 @@ export class AuthService {
     }
 
     const jwt = this.getAuthToken(user);
-    return { user };
+    return { user,jwt };
   }
 
   static hashPassword(password: string): Promise<string> {

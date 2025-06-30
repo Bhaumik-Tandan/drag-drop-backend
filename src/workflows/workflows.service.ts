@@ -14,8 +14,8 @@ export class WorkflowsService {
       data: {
         name: dto.name,
         userId,
-        components: dto.components as unknown as Prisma.InputJsonValue,
-        connections: dto.connections as unknown as Prisma.InputJsonValue,
+        components: dto.components as Prisma.InputJsonValue,
+        connections: dto.connections as Prisma.InputJsonValue,
         configurations: dto.configurations as Prisma.InputJsonValue,
       },
     });
