@@ -1,11 +1,11 @@
-import { WorkflowComponent, WorkflowConnection } from '../dto/create-workflow.dto';
+import { WorkflowComponentDto,WorkflowConnectionDto} from '../dto/create-workflow.dto';
 
 export class Workflow {
   id: number;
   name: string;
   userId: number;
-  components: WorkflowComponent[];
-  connections: WorkflowConnection[];
+  components: WorkflowComponentDto[];
+  connections: WorkflowConnectionDto[];
   configurations?: Record<string, any>;
   createdAt: Date;
   updatedAt: Date;

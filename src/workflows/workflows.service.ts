@@ -41,8 +41,8 @@ export class WorkflowsService {
       where: { id },
       data: {
         ...(dto.name         !== undefined && { name: dto.name }),
-        ...(dto.components   !== undefined && { components: dto.components as unknown as Prisma.InputJsonValue }),
-        ...(dto.connections  !== undefined && { connections: dto.connections as unknown as Prisma.InputJsonValue }),
+        ...(dto.components   !== undefined && { components: dto.components as Prisma.InputJsonValue }),
+        ...(dto.connections  !== undefined && { connections: dto.connections as Prisma.InputJsonValue }),
         ...(dto.configurations !== undefined && { configurations: dto.configurations as Prisma.InputJsonValue }),
       },
     });
@@ -54,7 +54,7 @@ export class WorkflowsService {
     return { deleted: true };
   }
 
-  async validate(userId: number, dto: CreateWorkflowDto) {
+  async validate(dto: CreateWorkflowDto) {
     // Basic validation: check required fields
     if (!dto.name) return { valid: false, error: 'Name is required' };
     if (!Array.isArray(dto.components) || dto.components.length === 0)

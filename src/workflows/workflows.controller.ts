@@ -52,7 +52,7 @@ export class WorkflowsController {
   }
 
   @Post('validate')
-  validate(@Body() dto: CreateWorkflowDto, @Request() req) {
-    return this.svc.validate(req.user.id, dto);
+  validate(@Body() dto: CreateWorkflowDto) {
+    return this.svc.validate(dto);
   }
 }

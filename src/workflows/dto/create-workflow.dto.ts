@@ -17,7 +17,7 @@ class PositionDto {
   @IsNumber() y: number;
 }
 
-class WorkflowComponentDto {
+export class WorkflowComponentDto {
   @IsString() id: string;
   @IsString() title: string;
   @IsString() type: string;
@@ -31,7 +31,7 @@ class WorkflowComponentDto {
   config: Prisma.InputJsonValue;
 }
 
-class WorkflowConnectionDto {
+export class WorkflowConnectionDto {
   @IsString() id: string;
   @IsString() from: string;
   @IsString() fromType: string;
