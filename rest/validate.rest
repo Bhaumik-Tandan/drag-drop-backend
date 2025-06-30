@@ -1,0 +1,56 @@
+POST http://localhost:3000/workflows/validate
+Content-Type: application/json
+
+{
+    "id": 3,
+    "name": "abcd",
+    "userId": 1,
+    "components": [
+        {
+            "id": "ftu0eo4wr",
+            "icon": "📥",
+            "type": "input",
+            "color": "#10b981",
+            "title": "Input Node",
+            "config": {
+                "inputType": "text",
+                "placeholder": "Enter value"
+            },
+            "position": {
+                "x": 85,
+                "y": 77.5
+            }
+        },
+        {
+            "id": "gpxsjeqb6",
+            "icon": "📤",
+            "type": "output",
+            "color": "#3b82f6",
+            "title": "Output Node",
+            "config": {
+                "outputFormat": "json"
+            },
+            "position": {
+                "x": 307,
+                "y": 289.5
+            }
+        }
+    ],
+    "connections": [
+        {
+            "id": "cw6hdmk1y",
+            "to": "gpxsjeqb6",
+            "from": "ftu0eo4wr",
+            "toType": "top",
+            "fromType": "bottom"
+        }
+    ],
+    "configurations": {
+        "theme": "light",
+        "autoSave": true
+    },
+    "createdAt": "2025-06-28T17:48:22.921Z",
+    "updatedAt": "2025-06-28T17:48:22.921Z"
+}
+
+
