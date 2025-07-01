@@ -18,12 +18,13 @@ export class WorkflowsController {
     @Body() dto: CreateWorkflowDto,
     @Request() req,                   
   ) {
-    return this.svc.create(req.user.id, dto);
+    return this.svc.create(req.user, dto);
   }
 
   @Get()
   findAll(@Request() req) {
-    return this.svc.findAll(req.user.id);
+    console.log('User ID:', req);
+    return this.svc.findAll(req.user);
   }
 
   @Get(':id')
@@ -31,7 +32,7 @@ export class WorkflowsController {
     @Param('id', ParseIntPipe) id: number,
     @Request() req,
   ) {
-    return this.svc.findOne(req.user.id, id);
+    return this.svc.findOne(req.user, id);
   }
 
   @Put(':id')
@@ -40,7 +41,7 @@ export class WorkflowsController {
     @Body() dto: UpdateWorkflowDto,
     @Request() req,
   ) {
-    return this.svc.update(req.user.id, id, dto);
+    return this.svc.update(req.user, id, dto);
   }
 
   @Delete(':id')
@@ -48,7 +49,7 @@ export class WorkflowsController {
     @Param('id', ParseIntPipe) id: number,
     @Request() req,
   ) {
-    return this.svc.remove(req.user.id, id);
+    return this.svc.remove(req.user, id);
   }
 
   @Post('validate')
