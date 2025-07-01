@@ -40,7 +40,7 @@ export class WorkflowsController {
     @Body() dto: UpdateWorkflowDto,
     @Request() req,
   ) {
-    return this.svc.update(req.use.id, id, dto);
+    return this.svc.update(req.user.id, id, dto);
   }
 
   @Delete(':id')
