@@ -8,7 +8,7 @@ import { WorkflowsService } from './workflows.service';
 import { CreateWorkflowDto } from './dto/create-workflow.dto';
 import { UpdateWorkflowDto } from './dto/update-workflow.dto';
 
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('workflows')
 export class WorkflowsController {
   constructor(private readonly svc: WorkflowsService) {}
@@ -18,13 +18,12 @@ export class WorkflowsController {
     @Body() dto: CreateWorkflowDto,
     @Request() req,                   
   ) {
-    return this.svc.create(req.user, dto);
+    return this.svc.create(req.user.id, dto);
   }
 
   @Get()
   findAll(@Request() req) {
-    console.log('User ID:', req);
-    return this.svc.findAll(req.user);
+    return this.svc.findAll(req.user.id);
   }
 
   @Get(':id')
@@ -32,7 +31,7 @@ export class WorkflowsController {
     @Param('id', ParseIntPipe) id: number,
     @Request() req,
   ) {
-    return this.svc.findOne(req.user, id);
+    return this.svc.findOne(req.user.id, id);
   }
 
   @Put(':id')
@@ -41,7 +40,7 @@ export class WorkflowsController {
     @Body() dto: UpdateWorkflowDto,
     @Request() req,
   ) {
-    return this.svc.update(req.user, id, dto);
+    return this.svc.update(req.use.id, id, dto);
   }
 
   @Delete(':id')
@@ -49,7 +48,7 @@ export class WorkflowsController {
     @Param('id', ParseIntPipe) id: number,
     @Request() req,
   ) {
-    return this.svc.remove(req.user, id);
+    return this.svc.remove(req.user.id, id);
   }
 
   @Post('validate')

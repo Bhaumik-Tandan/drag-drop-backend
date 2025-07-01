@@ -22,6 +22,8 @@ export class WorkflowsService {
   }
 
   async findAll(userId: number) {
+    if(!userId) 
+      throw new ForbiddenException('User ID is required');
     return this.prisma.workflow.findMany({
       where: { userId },
       orderBy: { updatedAt: 'desc' },
